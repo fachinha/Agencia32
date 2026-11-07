@@ -1,0 +1,370 @@
+/* ==========================================================
+   HEADER ESTILO EMPORIO 69 - AGENCIA 32 BARILOCHE
+   Barra de navegación fija con indicador animado deslizante
+   ========================================================== */
+
+.site-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  background: rgba(10, 15, 20, 0.75);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(240, 123, 30, 0.15);
+  padding: 0.85rem 1.5rem;
+}
+
+.site-header.scrolled {
+  background: rgba(10, 15, 20, 0.94);
+  padding: 0.65rem 1.5rem;
+  border-bottom: 1px solid rgba(240, 123, 30, 0.28);
+  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.8), 0 0 20px -5px rgba(240, 123, 30, 0.12);
+}
+
+.header-inner {
+  max-width: 1280px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  position: relative;
+}
+
+/* Marca / Logo */
+.header-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  text-decoration: none;
+  flex-shrink: 0;
+  transition: transform 0.25s ease;
+}
+
+.header-brand:hover {
+  transform: scale(1.02);
+}
+
+.brand-logo-img {
+  height: 48px;
+  width: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 0 10px rgba(240, 123, 30, 0.35));
+  transition: all 0.3s ease;
+}
+
+.site-header.scrolled .brand-logo-img {
+  height: 42px;
+}
+
+.brand-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.brand-name {
+  font-family: 'Black Han Sans', 'Paytone One', sans-serif;
+  font-size: 1.35rem;
+  line-height: 1.1;
+  letter-spacing: 0.04em;
+  background: linear-gradient(135deg, #FFFFFF 0%, #FFF3CC 50%, var(--orange) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.brand-badge {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--green-light);
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.brand-badge::before {
+  content: '';
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  background: var(--green);
+  border-radius: 50%;
+  box-shadow: 0 0 6px var(--green);
+}
+
+/* Nav Container Desktop */
+.header-nav {
+  display: none;
+  align-items: center;
+  position: relative;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  padding: 0.25rem 0.5rem;
+  border-radius: 100px;
+}
+
+@media (min-width: 992px) {
+  .header-nav {
+    display: flex;
+  }
+}
+
+.nav-list {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  position: relative;
+}
+
+.nav-item {
+  position: relative;
+}
+
+.nav-link {
+  display: inline-block;
+  padding: 0.55rem 1.15rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.72);
+  text-decoration: none;
+  border-radius: 100px;
+  transition: color 0.25s ease;
+  position: relative;
+  z-index: 2;
+  white-space: nowrap;
+}
+
+.nav-link:hover {
+  color: #FFFFFF;
+}
+
+.nav-link.active {
+  color: #FFFFFF;
+  text-shadow: 0 0 10px rgba(240, 123, 30, 0.5);
+}
+
+/* BARRA ANIMADA DESLIZANTE (Emporio 69 Style) */
+.nav-sliding-indicator {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 100%;
+  border-radius: 100px;
+  background: linear-gradient(135deg, rgba(240, 123, 30, 0.3) 0%, rgba(127, 162, 49, 0.3) 100%);
+  border: 1px solid rgba(240, 123, 30, 0.55);
+  box-shadow: 0 0 16px -2px rgba(240, 123, 30, 0.35), inset 0 0 12px rgba(240, 123, 30, 0.2);
+  pointer-events: none;
+  transition: all 0.35s cubic-bezier(0.2, 0.9, 0.3, 1.2);
+  opacity: 0;
+  z-index: 1;
+}
+
+/* Línea animada inferior estilo Emporio 69 */
+.nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: 4px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 2.5px;
+  border-radius: 4px;
+  background: linear-gradient(90deg, var(--orange), var(--green-light));
+  box-shadow: 0 0 8px var(--orange);
+  transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 3;
+}
+
+.nav-link:hover::after,
+.nav-link.active::after {
+  width: calc(100% - 1.8rem);
+}
+
+/* Header CTAs */
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.btn-header-rv {
+  display: none;
+  align-items: center;
+  gap: 6px;
+  background: rgba(240, 123, 30, 0.14);
+  border: 1px solid rgba(240, 123, 30, 0.35);
+  border-radius: 100px;
+  padding: 0.55rem 1.15rem;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--orange-light);
+  text-decoration: none;
+  transition: all 0.25s ease;
+  cursor: pointer;
+}
+
+@media (min-width: 640px) {
+  .btn-header-rv {
+    display: inline-flex;
+  }
+}
+
+.btn-header-rv:hover {
+  background: var(--orange);
+  color: #0A0F14;
+  box-shadow: 0 0 18px var(--orange-glow);
+  transform: translateY(-2px);
+}
+
+.btn-header-rv .live-dot {
+  width: 8px;
+  height: 8px;
+  background: var(--green-light);
+  border-radius: 50%;
+  box-shadow: 0 0 8px var(--green-light);
+  animation: pulse-dot 1.8s infinite;
+}
+
+.btn-header-wsp {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  background: linear-gradient(135deg, var(--green) 0%, var(--green-dark) 100%);
+  color: #FFFFFF;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 100px;
+  padding: 0.55rem 1.25rem;
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: all 0.25s ease;
+  box-shadow: 0 4px 14px rgba(127, 162, 49, 0.3);
+}
+
+.btn-header-wsp:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(127, 162, 49, 0.5);
+  background: linear-gradient(135deg, var(--green-light) 0%, var(--green) 100%);
+}
+
+.btn-header-wsp svg {
+  width: 16px;
+  height: 16px;
+  fill: currentColor;
+}
+
+/* Mobile Toggle Hamburger */
+.header-hamburger {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  width: 38px;
+  height: 38px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 10px;
+  padding: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+@media (min-width: 992px) {
+  .header-hamburger {
+    display: none;
+  }
+}
+
+.header-hamburger:hover {
+  background: rgba(240, 123, 30, 0.15);
+  border-color: rgba(240, 123, 30, 0.4);
+}
+
+.hamburger-line {
+  width: 100%;
+  height: 2px;
+  background: #FFFFFF;
+  border-radius: 2px;
+  transition: all 0.3s ease;
+}
+
+.header-hamburger.active .hamburger-line:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+
+.header-hamburger.active .hamburger-line:nth-child(2) {
+  opacity: 0;
+}
+
+.header-hamburger.active .hamburger-line:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+}
+
+/* Mobile Drawer */
+.mobile-nav-drawer {
+  position: fixed;
+  top: 70px;
+  left: 0;
+  right: 0;
+  background: rgba(10, 15, 20, 0.98);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(240, 123, 30, 0.25);
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  transform: translateY(-120%);
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  z-index: 999;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.8);
+}
+
+.mobile-nav-drawer.open {
+  transform: translateY(0);
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.mobile-nav-link {
+  padding: 0.85rem 1rem;
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.85);
+  text-decoration: none;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.03);
+  border-left: 3px solid transparent;
+  transition: all 0.25s ease;
+}
+
+.mobile-nav-link:hover,
+.mobile-nav-link.active {
+  background: rgba(240, 123, 30, 0.12);
+  border-left-color: var(--orange);
+  color: #FFFFFF;
+  padding-left: 1.25rem;
+}
+
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(1.3); }
+}

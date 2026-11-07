@@ -1,0 +1,1331 @@
+/* ==========================================================
+   ESTILOS GENERALES - AGENCIA 32 BARILOCHE
+   Identidad visual: Naranja (#F07B1E) & Verde (#7FA231)
+   Base: Dark Luxury, inspirado en la40.netlify.app
+   ========================================================== */
+
+:root {
+  /* Paleta Oficial Agencia 32 */
+  --orange: #F07B1E;
+  --orange-dark: #C45E0F;
+  --orange-light: #FF9E4A;
+  --orange-glow: rgba(240, 123, 30, 0.45);
+  
+  --green: #7FA231;
+  --green-dark: #5F7D1F;
+  --green-light: #9BCA34;
+  --green-glow: rgba(127, 162, 49, 0.45);
+
+  --gold: #FFB800;
+  --gold-dark: #CC9200;
+  --gold-light: #FFF3CC;
+
+  --rn-blue: #0057A8;
+  --rn-blue-dark: #003E7A;
+  
+  --dark: #0A0F14;
+  --dark2: #121820;
+  --dark3: #1A222D;
+  --dark4: #242E3C;
+  --dark5: #2E3A4B;
+
+  --white: #FFFFFF;
+  --off-white: #F4F6F9;
+  --text-muted: rgba(255, 255, 255, 0.65);
+  --border-subtle: rgba(255, 255, 255, 0.08);
+}
+
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  font-size: 16px;
+}
+
+body {
+  background-color: var(--dark);
+  color: var(--white);
+  font-family: 'Outfit', sans-serif;
+  overflow-x: hidden;
+  line-height: 1.6;
+}
+
+/* ==========================================================
+   TIPOGRAFÍAS Y ENCABEZADOS COMUNES
+   ========================================================== */
+.section {
+  padding: 5.5rem 1.5rem;
+  max-width: 1240px;
+  margin: 0 auto;
+  position: relative;
+}
+
+.section-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  padding: 6px 14px;
+  border-radius: 100px;
+  margin-bottom: 1rem;
+}
+
+.tag-orange {
+  background: rgba(240, 123, 30, 0.15);
+  border: 1px solid rgba(240, 123, 30, 0.35);
+  color: var(--orange-light);
+}
+
+.tag-green {
+  background: rgba(127, 162, 49, 0.15);
+  border: 1px solid rgba(127, 162, 49, 0.35);
+  color: var(--green-light);
+}
+
+.tag-gold {
+  background: rgba(255, 184, 0, 0.15);
+  border: 1px solid rgba(255, 184, 0, 0.35);
+  color: var(--gold);
+}
+
+.section-h {
+  font-family: 'Black Han Sans', 'Paytone One', sans-serif;
+  font-size: clamp(2rem, 4.5vw, 3.4rem);
+  line-height: 1.08;
+  letter-spacing: 0.02em;
+  margin-bottom: 1rem;
+  color: var(--white);
+}
+
+.section-p {
+  font-size: 1.05rem;
+  color: var(--text-muted);
+  max-width: 640px;
+  margin-bottom: 3rem;
+}
+
+/* ==========================================================
+   HERO SECTION
+   ========================================================== */
+.hero {
+  min-height: 100vh;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 8rem 1.5rem 5rem;
+  overflow: hidden;
+  background: 
+    radial-gradient(circle at 10% 20%, rgba(240, 123, 30, 0.18) 0%, transparent 45%),
+    radial-gradient(circle at 85% 75%, rgba(127, 162, 49, 0.18) 0%, transparent 45%),
+    radial-gradient(circle at 50% 50%, rgba(10, 15, 20, 0.6) 0%, var(--dark) 100%);
+}
+
+.hero-particles {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.hero-particle {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  animation: floatUp infinite linear;
+}
+
+@keyframes floatUp {
+  0% { transform: translateY(105vh) scale(0.6); opacity: 0; }
+  20% { opacity: 0.8; }
+  80% { opacity: 0.8; }
+  100% { transform: translateY(-10vh) scale(1.1); opacity: 0; }
+}
+
+.hero-content {
+  max-width: 1240px;
+  margin: 0 auto;
+  width: 100%;
+  position: relative;
+  z-index: 2;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 3.5rem;
+  align-items: center;
+}
+
+@media (min-width: 992px) {
+  .hero-content {
+    grid-template-columns: 1.15fr 0.85fr;
+  }
+}
+
+.hero-institution {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 6px 16px;
+  border-radius: 100px;
+  margin-bottom: 1.75rem;
+}
+
+.hero-inst-badge {
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--green-light);
+}
+
+.hero-inst-sep {
+  width: 1px;
+  height: 14px;
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.hero-inst-loc {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.7);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.hero-title {
+  font-family: 'Black Han Sans', 'Paytone One', sans-serif;
+  font-size: clamp(2.6rem, 5.5vw, 4.4rem);
+  line-height: 1.04;
+  letter-spacing: 0.02em;
+  margin-bottom: 1.5rem;
+  color: var(--white);
+}
+
+.hero-title .line-orange {
+  background: linear-gradient(135deg, #FFFFFF 0%, var(--orange-light) 40%, var(--orange) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.hero-title .line-green {
+  background: linear-gradient(135deg, #FFFFFF 0%, var(--green-light) 40%, var(--green) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.hero-desc {
+  font-size: 1.15rem;
+  color: var(--text-muted);
+  max-width: 580px;
+  margin-bottom: 2.25rem;
+  line-height: 1.65;
+}
+
+.hero-desc strong {
+  color: var(--white);
+}
+
+.hero-ctas {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 3rem;
+}
+
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: linear-gradient(135deg, var(--orange) 0%, var(--orange-dark) 100%);
+  color: #FFFFFF;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 100px;
+  padding: 0.95rem 2rem;
+  font-size: 0.95rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-decoration: none;
+  cursor: pointer;
+  box-shadow: 0 8px 24px var(--orange-glow);
+  transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 30px rgba(240, 123, 30, 0.65);
+  background: linear-gradient(135deg, var(--orange-light) 0%, var(--orange) 100%);
+}
+
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: linear-gradient(135deg, var(--green) 0%, var(--green-dark) 100%);
+  color: #FFFFFF;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 100px;
+  padding: 0.95rem 2rem;
+  font-size: 0.95rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-decoration: none;
+  cursor: pointer;
+  box-shadow: 0 8px 24px var(--green-glow);
+  transition: all 0.3s ease;
+}
+
+.btn-secondary:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 30px rgba(127, 162, 49, 0.65);
+  background: linear-gradient(135deg, var(--green-light) 0%, var(--green) 100%);
+}
+
+.btn-outline {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.05);
+  color: #FFFFFF;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 100px;
+  padding: 0.95rem 1.8rem;
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.btn-outline:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.4);
+  transform: translateY(-2px);
+}
+
+/* Hero Right: Ficha 3D y Widget La Fija */
+.hero-visual {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+  position: relative;
+}
+
+.hero-chip-wrap {
+  position: relative;
+  width: 280px;
+  height: 280px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@media (min-width: 768px) {
+  .hero-chip-wrap {
+    width: 330px;
+    height: 330px;
+  }
+}
+
+.hero-chip-glow {
+  position: absolute;
+  inset: -15px;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--orange-glow) 0%, var(--green-glow) 70%, transparent 100%);
+  filter: blur(25px);
+  animation: chipGlow 6s ease-in-out infinite alternate;
+}
+
+@keyframes chipGlow {
+  0% { transform: scale(0.92) rotate(0deg); opacity: 0.6; }
+  100% { transform: scale(1.08) rotate(180deg); opacity: 0.9; }
+}
+
+.hero-chip-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  position: relative;
+  z-index: 2;
+  filter: drop-shadow(0 15px 30px rgba(0, 0, 0, 0.8));
+  animation: chipFloat 5s ease-in-out infinite alternate;
+}
+
+@keyframes chipFloat {
+  0% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-10px) rotate(2deg); }
+  100% { transform: translateY(4px) rotate(-1deg); }
+}
+
+/* Card "La Fija del Día" */
+.hero-lafija {
+  background: rgba(26, 34, 45, 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(240, 123, 30, 0.35);
+  border-radius: 20px;
+  padding: 1.5rem 1.75rem;
+  width: 100%;
+  max-width: 360px;
+  box-shadow: 0 15px 35px -10px rgba(0, 0, 0, 0.7), 0 0 20px -5px rgba(240, 123, 30, 0.15);
+}
+
+.hero-lafija-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.hero-lafija-title {
+  font-size: 0.85rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--orange-light);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.hero-lafija-date {
+  font-size: 0.74rem;
+  color: rgba(255, 255, 255, 0.5);
+  font-weight: 600;
+}
+
+.hero-lafija-nums {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+
+.hero-lafija-item {
+  background: rgba(10, 15, 20, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  padding: 10px 8px;
+  text-align: center;
+  transition: all 0.25s ease;
+}
+
+.hero-lafija-item:hover {
+  border-color: var(--green);
+  transform: translateY(-2px);
+}
+
+.hero-lafija-lbl {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.45);
+  margin-bottom: 3px;
+}
+
+.hero-lafija-val {
+  font-family: 'Black Han Sans', sans-serif;
+  font-size: 1.6rem;
+  line-height: 1;
+  color: var(--white);
+  letter-spacing: 0.05em;
+}
+
+.hero-lafija-val.num-4 {
+  color: var(--gold);
+}
+
+.hero-lafija-val.num-3 {
+  color: var(--orange-light);
+}
+
+.hero-lafija-val.num-2 {
+  color: var(--green-light);
+}
+
+/* ==========================================================
+   TICKER / CARRUSEL INFINITO DE FRASES (la40 Style)
+   ========================================================== */
+.ticker {
+  background: linear-gradient(90deg, #121820 0%, #1A222D 50%, #121820 100%);
+  border-top: 1px solid rgba(240, 123, 30, 0.2);
+  border-bottom: 1px solid rgba(127, 162, 49, 0.2);
+  padding: 0.9rem 0;
+  overflow: hidden;
+  position: relative;
+  z-index: 10;
+}
+
+.ticker::before, .ticker::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 80px;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.ticker::before {
+  left: 0;
+  background: linear-gradient(to right, #121820, transparent);
+}
+
+.ticker::after {
+  right: 0;
+  background: linear-gradient(to left, #121820, transparent);
+}
+
+.ticker-track {
+  display: flex;
+  white-space: nowrap;
+  animation: tickerLoop 32s linear infinite;
+}
+
+.ticker-track:hover {
+  animation-play-state: paused;
+}
+
+@keyframes tickerLoop {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.ticker-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 2rem;
+  font-size: 0.88rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.ticker-item .ticker-dot {
+  color: var(--orange);
+  font-size: 1.2rem;
+}
+
+.ticker-item.highlight {
+  color: var(--gold);
+}
+
+/* ==========================================================
+   SECCIÓN: TODOS LOS JUEGOS DE RÍO NEGRO
+   ========================================================== */
+.juegos-section-wrap {
+  background: var(--dark);
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.juegos-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.5rem;
+}
+
+.juego-card {
+  background: var(--dark2);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 18px;
+  padding: 1.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.juego-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: var(--accent-color, var(--orange));
+  opacity: 0.6;
+  transition: opacity 0.3s ease;
+}
+
+.juego-card:hover {
+  transform: translateY(-5px);
+  border-color: var(--accent-color, var(--orange));
+  box-shadow: 0 15px 35px -10px rgba(0, 0, 0, 0.7), 0 0 20px -5px var(--accent-glow, var(--orange-glow));
+}
+
+.juego-card:hover::before {
+  opacity: 1;
+}
+
+.juego-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  border-radius: 100px;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  width: fit-content;
+}
+
+.juego-name {
+  font-family: 'Black Han Sans', sans-serif;
+  font-size: 1.45rem;
+  color: var(--white);
+  letter-spacing: 0.03em;
+  line-height: 1.15;
+}
+
+.juego-desc {
+  font-size: 0.92rem;
+  color: var(--text-muted);
+  line-height: 1.6;
+  flex: 1;
+}
+
+.juego-schedule {
+  font-size: 0.76rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.45);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  padding-top: 10px;
+}
+
+.juego-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  padding: 8px 14px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--white);
+  text-decoration: none;
+  transition: all 0.25s ease;
+  margin-top: 4px;
+}
+
+.juego-link:hover {
+  background: var(--accent-color, var(--orange));
+  color: #0A0F14;
+  border-color: transparent;
+}
+
+/* Colores de acento individuales para cada juego */
+.j-rionegrina   { --accent-color: #0057A8; --accent-glow: rgba(0,87,168,0.4); }
+.j-quini6       { --accent-color: #E8192C; --accent-glow: rgba(232,25,44,0.4); }
+.j-telebingo    { --accent-color: #7B2D8B; --accent-glow: rgba(123,45,139,0.4); }
+.j-lotoplus     { --accent-color: #FFB800; --accent-glow: rgba(255,184,0,0.4); }
+.j-brinco       { --accent-color: #F47920; --accent-glow: rgba(244,121,32,0.4); }
+.j-unificada    { --accent-color: #00A651; --accent-glow: rgba(0,166,81,0.4); }
+.j-telekino     { --accent-color: #D32F2F; --accent-glow: rgba(211,47,47,0.4); }
+.j-pozo         { --accent-color: #7CB342; --accent-glow: rgba(124,179,66,0.4); }
+.j-casinoclub   { --accent-color: #F07B1E; --accent-glow: rgba(240,123,30,0.5); }
+
+/* ==========================================================
+   SECCIÓN: CASINO CLUB ONLINE (Reemplazo de BetSur)
+   ========================================================== */
+.casinoclub-wrap {
+  background: linear-gradient(135deg, #0A0E17 0%, #17152A 50%, #0A0E17 100%);
+  border-top: 1px solid rgba(240, 123, 30, 0.2);
+  border-bottom: 1px solid rgba(240, 123, 30, 0.2);
+  position: relative;
+  overflow: hidden;
+}
+
+.casinoclub-inner {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 5.5rem 1.5rem;
+}
+
+.casinoclub-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  margin-bottom: 3.5rem;
+  padding-bottom: 2rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.casinoclub-brand {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+}
+
+.casinoclub-logo-text {
+  font-family: 'Black Han Sans', sans-serif;
+  font-size: clamp(2rem, 4vw, 2.8rem);
+  background: linear-gradient(135deg, #FFB800 0%, #F07B1E 50%, #FF5566 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: 0.03em;
+  line-height: 1;
+}
+
+.casinoclub-divider {
+  width: 1px;
+  height: 38px;
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.casinoclub-subtitle {
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.6);
+  line-height: 1.5;
+}
+
+.casinoclub-pill {
+  background: rgba(240, 123, 30, 0.15);
+  border: 1px solid rgba(240, 123, 30, 0.4);
+  border-radius: 100px;
+  padding: 8px 22px;
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--orange-light);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.casinoclub-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 1.25rem;
+  margin-bottom: 3rem;
+}
+
+.casinoclub-card {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(240, 123, 30, 0.2);
+  border-radius: 16px;
+  padding: 1.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  transition: all 0.3s ease;
+}
+
+.casinoclub-card:hover {
+  border-color: var(--orange);
+  background: rgba(240, 123, 30, 0.08);
+  transform: translateY(-4px);
+  box-shadow: 0 12px 25px -8px rgba(0, 0, 0, 0.7);
+}
+
+.casinoclub-card-icon {
+  width: 50px;
+  height: 50px;
+  border-radius: 14px;
+  background: rgba(240, 123, 30, 0.15);
+  border: 1px solid rgba(240, 123, 30, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+}
+
+.casinoclub-card-title {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: var(--white);
+}
+
+.casinoclub-card-desc {
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.6);
+  line-height: 1.6;
+}
+
+.casinoclub-cta-banner {
+  background: linear-gradient(135deg, rgba(240, 123, 30, 0.2) 0%, rgba(127, 162, 49, 0.15) 100%);
+  border: 1px solid rgba(240, 123, 30, 0.35);
+  border-radius: 20px;
+  padding: 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 2rem;
+  box-shadow: 0 15px 35px -10px rgba(0, 0, 0, 0.8);
+}
+
+.casinoclub-cta-title {
+  font-family: 'Black Han Sans', sans-serif;
+  font-size: 1.8rem;
+  line-height: 1.15;
+  color: var(--white);
+  margin-bottom: 0.5rem;
+}
+
+.casinoclub-cta-sub {
+  font-size: 0.95rem;
+  color: rgba(255, 255, 255, 0.7);
+  max-width: 580px;
+}
+
+.casinoclub-cta-btns {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+/* ==========================================================
+   TABLA DE LOS SUEÑOS (¿Soñaste algo esta noche?)
+   ========================================================== */
+.suenos-section-wrap {
+  background: var(--dark2);
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.suenos-search-box {
+  max-width: 520px;
+  position: relative;
+  margin-bottom: 2.5rem;
+}
+
+.suenos-input {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 100px;
+  padding: 1rem 1.5rem 1rem 3.2rem;
+  font-size: 1rem;
+  color: var(--white);
+  outline: none;
+  font-family: inherit;
+  transition: all 0.25s ease;
+}
+
+.suenos-input:focus {
+  border-color: var(--orange);
+  background: rgba(255, 255, 255, 0.08);
+  box-shadow: 0 0 15px var(--orange-glow);
+}
+
+.suenos-search-icon {
+  position: absolute;
+  left: 1.25rem;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 1.2rem;
+  color: rgba(255, 255, 255, 0.4);
+  pointer-events: none;
+}
+
+.suenos-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  max-height: 520px;
+  overflow-y: auto;
+  padding-right: 8px;
+}
+
+@media (min-width: 540px) {
+  .suenos-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (min-width: 768px) {
+  .suenos-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .suenos-grid {
+    grid-template-columns: repeat(5, 1fr);
+  }
+}
+
+.sueno-card {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 12px;
+  padding: 10px 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  transition: all 0.2s ease;
+}
+
+.sueno-card:hover {
+  background: rgba(240, 123, 30, 0.12);
+  border-color: var(--orange);
+  transform: translateY(-2px);
+}
+
+.sueno-num {
+  font-family: 'Black Han Sans', sans-serif;
+  font-size: 1.45rem;
+  color: var(--orange-light);
+  line-height: 1;
+}
+
+.sueno-name {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.85);
+  text-align: right;
+  flex: 1;
+}
+
+/* ==========================================================
+   TESTIMONIOS & RESEÑAS GOOGLE MAPS
+   ========================================================== */
+.reviews-section-wrap {
+  background: var(--dark3);
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.reviews-header-stats {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+  margin-bottom: 3rem;
+}
+
+.reviews-score-box {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.reviews-score-num {
+  font-family: 'Black Han Sans', sans-serif;
+  font-size: 3.2rem;
+  color: var(--gold);
+  line-height: 1;
+}
+
+.reviews-stars {
+  color: var(--gold);
+  font-size: 1.3rem;
+  letter-spacing: 2px;
+}
+
+.reviews-source {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.reviews-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+  gap: 1.25rem;
+}
+
+.review-card {
+  background: var(--dark2);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 16px;
+  padding: 1.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  transition: all 0.25s ease;
+}
+
+.review-card:hover {
+  border-color: rgba(255, 184, 0, 0.35);
+  transform: translateY(-3px);
+}
+
+.review-author {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.review-avatar {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Black Han Sans', sans-serif;
+  font-size: 1.05rem;
+  color: #FFFFFF;
+  flex-shrink: 0;
+}
+
+.review-author-name {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--white);
+}
+
+.review-quote {
+  font-size: 0.92rem;
+  color: rgba(255, 255, 255, 0.7);
+  line-height: 1.65;
+  font-style: italic;
+  flex: 1;
+}
+
+/* ==========================================================
+   HORARIOS, CONTACTO Y MAPA DE BARILOCHE
+   ========================================================== */
+.contact-section-wrap {
+  background: var(--dark);
+}
+
+.contact-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2.5rem;
+}
+
+@media (min-width: 992px) {
+  .contact-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.contact-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.contact-card {
+  background: var(--dark2);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  padding: 1.5rem 1.75rem;
+  display: flex;
+  align-items: flex-start;
+  gap: 1.25rem;
+  transition: all 0.25s ease;
+}
+
+.contact-card:hover {
+  border-color: var(--orange);
+  transform: translateY(-2px);
+}
+
+.contact-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  background: rgba(240, 123, 30, 0.15);
+  border: 1px solid rgba(240, 123, 30, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  flex-shrink: 0;
+  color: var(--orange-light);
+}
+
+.contact-card.green .contact-icon {
+  background: rgba(127, 162, 49, 0.15);
+  border-color: rgba(127, 162, 49, 0.3);
+  color: var(--green-light);
+}
+
+.contact-label {
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.45);
+  margin-bottom: 4px;
+}
+
+.contact-val {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--white);
+  line-height: 1.35;
+}
+
+.contact-sub {
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.55);
+  margin-top: 3px;
+}
+
+.contact-map-wrap {
+  border-radius: 20px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  min-height: 380px;
+  box-shadow: 0 15px 35px -10px rgba(0, 0, 0, 0.8);
+}
+
+.contact-map-iframe {
+  width: 100%;
+  height: 100%;
+  min-height: 380px;
+  border: 0;
+}
+
+/* ==========================================================
+   FLOATING ACTION BUTTONS (FABs)
+   ========================================================== */
+.fabs {
+  position: fixed;
+  bottom: 1.75rem;
+  right: 1.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  z-index: 990;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(20px);
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.fabs.fabs-visible {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+
+.fab-btn {
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
+  transition: all 0.25s ease;
+  position: relative;
+  cursor: pointer;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+}
+
+.fab-btn:hover {
+  transform: scale(1.1) translateY(-3px);
+}
+
+.fab-wsp {
+  background: linear-gradient(135deg, var(--green-light) 0%, var(--green-dark) 100%);
+  color: #FFFFFF;
+}
+
+.fab-wsp svg {
+  width: 30px;
+  height: 30px;
+  fill: currentColor;
+}
+
+.fab-rv {
+  background: linear-gradient(135deg, var(--orange-light) 0%, var(--orange-dark) 100%);
+  color: #FFFFFF;
+  font-size: 26px;
+}
+
+/* Tooltip FAB */
+.fab-tooltip {
+  position: absolute;
+  right: 68px;
+  background: rgba(10, 15, 20, 0.95);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: #FFFFFF;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transform: translateX(10px);
+  transition: all 0.2s ease;
+}
+
+.fab-btn:hover .fab-tooltip {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* ==========================================================
+   FOOTER INSTITUCIONAL
+   ========================================================== */
+.site-footer {
+  background: #080C10;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 4.5rem 1.5rem 2.5rem;
+}
+
+.footer-inner {
+  max-width: 1240px;
+  margin: 0 auto;
+}
+
+.footer-top {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 3rem;
+  margin-bottom: 3.5rem;
+}
+
+@media (min-width: 768px) {
+  .footer-top {
+    grid-template-columns: 1.5fr 1fr 1fr;
+  }
+}
+
+.footer-brand {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.footer-logo-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.footer-logo-img {
+  height: 52px;
+  width: auto;
+  object-fit: contain;
+}
+
+.footer-desc {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  max-width: 380px;
+  line-height: 1.6;
+}
+
+.footer-socials {
+  display: flex;
+  gap: 12px;
+  margin-top: 0.5rem;
+}
+
+.social-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(255, 255, 255, 0.7);
+  text-decoration: none;
+  transition: all 0.25s ease;
+}
+
+.social-btn:hover {
+  background: var(--orange);
+  color: #0A0F14;
+  border-color: var(--orange);
+  transform: translateY(-2px);
+}
+
+.footer-col-title {
+  font-family: 'Black Han Sans', sans-serif;
+  font-size: 1.15rem;
+  color: var(--white);
+  letter-spacing: 0.04em;
+  margin-bottom: 1.25rem;
+}
+
+.footer-links {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.footer-link {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  text-decoration: none;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.footer-link:hover {
+  color: var(--orange-light);
+  transform: translateX(3px);
+}
+
+.footer-bottom {
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  padding-top: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  font-size: 0.82rem;
+  color: rgba(255, 255, 255, 0.4);
+  text-align: center;
+}
+
+@media (min-width: 768px) {
+  .footer-bottom {
+    flex-direction: row;
+    text-align: left;
+  }
+}
+
+.footer-legal-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 4px 12px;
+  border-radius: 100px;
+}
