@@ -79,34 +79,14 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // ==========================================
-// 3. FABs FLOTANTES (WhatsApp y Resultados)
+// 3. FABs FLOTANTES (WhatsApp y Resultados) - SIEMPRE VISIBLES
 // ==========================================
 (function initFabs() {
   document.addEventListener('DOMContentLoaded', () => {
     const fabs = document.querySelector('.fabs');
-    const hero = document.querySelector('.hero');
-    if (!fabs || !hero) return;
-
-    let ticking = false;
-
-    function checkVisibility() {
-      const heroBottom = hero.getBoundingClientRect().bottom;
-      if (heroBottom <= 100) {
-        fabs.classList.add('fabs-visible');
-      } else {
-        fabs.classList.remove('fabs-visible');
-      }
-      ticking = false;
+    if (fabs) {
+      fabs.classList.add('fabs-visible');
     }
-
-    window.addEventListener('scroll', () => {
-      if (!ticking) {
-        window.requestAnimationFrame(checkVisibility);
-        ticking = true;
-      }
-    }, { passive: true });
-
-    checkVisibility();
   });
 })();
 
