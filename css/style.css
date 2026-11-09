@@ -460,16 +460,18 @@ body {
 }
 
 /* ==========================================================
-   TICKER / CARRUSEL INFINITO DE FRASES (la40 Style)
+   TICKER / CARRUSEL CONTINUO (Tarjetas Verde & Naranja)
+   Inspirado en cotillonfiestaymas / la40 - Sin Emojis
    ========================================================== */
 .ticker {
-  background: linear-gradient(90deg, #121820 0%, #1A222D 50%, #121820 100%);
-  border-top: 1px solid rgba(240, 123, 30, 0.2);
-  border-bottom: 1px solid rgba(127, 162, 49, 0.2);
-  padding: 0.9rem 0;
+  background: #0A0F14;
+  border-top: 1px solid rgba(240, 123, 30, 0.3);
+  border-bottom: 1px solid rgba(127, 162, 49, 0.3);
+  padding: 0;
   overflow: hidden;
   position: relative;
   z-index: 10;
+  box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.6);
 }
 
 .ticker::before, .ticker::after {
@@ -477,25 +479,27 @@ body {
   position: absolute;
   top: 0;
   bottom: 0;
-  width: 80px;
+  width: 70px;
   z-index: 2;
   pointer-events: none;
 }
 
 .ticker::before {
   left: 0;
-  background: linear-gradient(to right, #121820, transparent);
+  background: linear-gradient(to right, #0A0F14, transparent);
 }
 
 .ticker::after {
   right: 0;
-  background: linear-gradient(to left, #121820, transparent);
+  background: linear-gradient(to left, #0A0F14, transparent);
 }
 
 .ticker-track {
   display: flex;
-  white-space: nowrap;
-  animation: tickerLoop 32s linear infinite;
+  align-items: stretch;
+  width: max-content;
+  animation: tickerLoop 36s linear infinite;
+  will-change: transform;
 }
 
 .ticker-track:hover {
@@ -503,29 +507,39 @@ body {
 }
 
 @keyframes tickerLoop {
-  0% { transform: translateX(0); }
-  100% { transform: translateX(-50%); }
+  0% { transform: translate3d(0, 0, 0); }
+  100% { transform: translate3d(-50%, 0, 0); }
 }
 
-.ticker-item {
+.ticker-card {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 10px;
-  padding: 0 2rem;
-  font-size: 0.88rem;
-  font-weight: 700;
+  padding: 13px 24px;
+  color: #FFFFFF;
+  font-weight: 800;
+  font-size: 0.82rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.85);
+  white-space: nowrap;
+  flex-shrink: 0;
+  border-right: 1px solid rgba(255, 255, 255, 0.22);
+  transition: filter 0.2s ease, transform 0.2s ease;
+  user-select: none;
+  cursor: default;
 }
 
-.ticker-item .ticker-dot {
-  color: var(--orange);
-  font-size: 1.2rem;
+.ticker-card.orange {
+  background: var(--orange);
 }
 
-.ticker-item.highlight {
-  color: var(--gold);
+.ticker-card.green {
+  background: var(--green);
+}
+
+.ticker-card:hover {
+  filter: brightness(1.15);
 }
 
 /* ==========================================================
@@ -590,6 +604,30 @@ body {
   width: fit-content;
 }
 
+.juego-logo {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 6px;
+  padding: 3px 6px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+}
+
+.juego-logo img {
+  display: block;
+  height: 28px;
+  width: auto;
+  max-width: 85px;
+  object-fit: contain;
+}
+
+.juego-logo-rionegrina img {
+  height: 26px;
+  max-width: 140px;
+}
+
 .juego-name {
   font-family: 'Black Han Sans', sans-serif;
   font-size: 1.45rem;
@@ -640,16 +678,18 @@ body {
   border-color: transparent;
 }
 
-/* Colores de acento individuales para cada juego */
+/* Colores de acento individuales para los 11 juegos oficiales */
 .j-rionegrina   { --accent-color: #0057A8; --accent-glow: rgba(0,87,168,0.4); }
 .j-quini6       { --accent-color: #E8192C; --accent-glow: rgba(232,25,44,0.4); }
 .j-telebingo    { --accent-color: #7B2D8B; --accent-glow: rgba(123,45,139,0.4); }
-.j-lotoplus     { --accent-color: #FFB800; --accent-glow: rgba(255,184,0,0.4); }
-.j-brinco       { --accent-color: #F47920; --accent-glow: rgba(244,121,32,0.4); }
+.j-minibingo    { --accent-color: #F47920; --accent-glow: rgba(244,121,32,0.4); }
 .j-unificada    { --accent-color: #00A651; --accent-glow: rgba(0,166,81,0.4); }
+.j-lotoplus     { --accent-color: #FFB800; --accent-glow: rgba(255,184,0,0.4); }
 .j-telekino     { --accent-color: #D32F2F; --accent-glow: rgba(211,47,47,0.4); }
-.j-pozo         { --accent-color: #7CB342; --accent-glow: rgba(124,179,66,0.4); }
-.j-casinoclub   { --accent-color: #F07B1E; --accent-glow: rgba(240,123,30,0.5); }
+.j-quiniexpress { --accent-color: #0057A8; --accent-glow: rgba(0,87,168,0.4); }
+.j-pozoquiniela { --accent-color: #7CB342; --accent-glow: rgba(124,179,66,0.4); }
+.j-money        { --accent-color: #00A651; --accent-glow: rgba(0,166,81,0.4); }
+.j-brinco       { --accent-color: #F47920; --accent-glow: rgba(244,121,32,0.4); }
 
 /* ==========================================================
    SECCIÓN: CASINO CLUB ONLINE (Reemplazo de BetSur)
@@ -846,9 +886,19 @@ body {
   left: 1.25rem;
   top: 50%;
   transform: translateY(-50%);
-  font-size: 1.2rem;
+  width: 20px;
+  height: 20px;
   color: rgba(255, 255, 255, 0.4);
   pointer-events: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.suenos-search-icon svg {
+  width: 100%;
+  height: 100%;
+  stroke: currentColor;
 }
 
 .suenos-grid {
@@ -1059,9 +1109,14 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 22px;
   flex-shrink: 0;
   color: var(--orange-light);
+}
+
+.contact-icon svg {
+  width: 22px;
+  height: 22px;
+  fill: currentColor;
 }
 
 .contact-card.green .contact-icon {
@@ -1163,7 +1218,12 @@ body {
 .fab-rv {
   background: linear-gradient(135deg, var(--orange-light) 0%, var(--orange-dark) 100%);
   color: #FFFFFF;
-  font-size: 26px;
+}
+
+.fab-rv svg {
+  width: 28px;
+  height: 28px;
+  fill: currentColor;
 }
 
 /* Tooltip FAB */

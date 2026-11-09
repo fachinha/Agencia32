@@ -1,16 +1,16 @@
 /**
  * NAV INDICATOR - ESTILO EMPORIO 69
- * Barra animada deslizante bajo los enlaces del header
+ * Barra animada deslizante bajo los enlaces del header con ScrollSpy preciso
  */
 (function() {
   document.addEventListener('DOMContentLoaded', () => {
     const nav = document.querySelector('.header-nav');
     const navList = document.querySelector('.nav-list');
-    const navLinks = document.querySelectorAll('.nav-link');
+    const navLinks = Array.from(document.querySelectorAll('.nav-link'));
     const header = document.querySelector('.site-header');
     const hamburger = document.querySelector('.header-hamburger');
     const drawer = document.querySelector('.mobile-nav-drawer');
-    const mobileLinks = document.querySelectorAll('.mobile-nav-link');
+    const mobileLinks = Array.from(document.querySelectorAll('.mobile-nav-link'));
 
     if (!navList || !navLinks.length) return;
 
@@ -23,6 +23,7 @@
     }
 
     let activeLink = document.querySelector('.nav-link.active') || navLinks[0];
+    let isHovering = false;
 
     // Posiciona la barra animada exactamente sobre el link
     function moveIndicatorTo(link) {
@@ -46,70 +47,115 @@
       moveIndicatorTo(activeLink);
     }, 150);
 
+    // Mapeo dinámico de enlaces a sus secciones destino
+    const sectionTargets = navLinks.map(link => {
+      const href = link.getAttribute('href');
+      if (href && href.startsWith('#')) {
+        const el = document.querySelector(href);
+        if (el) {
+          return { link, el, id: href.replace('#', '') };
+        }
+      }
+      return null;
+    }).filter(Boolean);
+
+    // Actualizar sección activa y mover indicador
+    function setActiveSection(id) {
+      const targetItem = sectionTargets.find(s => s.id === id);
+      if (!targetItem) return;
+
+      if (activeLink !== targetItem.link) {
+        navLinks.forEach(l => l.classList.remove('active'));
+        targetItem.link.classList.add('active');
+        activeLink = targetItem.link;
+        if (!isHovering) {
+          moveIndicatorTo(activeLink);
+        }
+      }
+
+      // Sincronizar mobile drawer
+      mobileLinks.forEach(ml => {
+        const mHref = ml.getAttribute('href');
+        if (mHref === `#${id}`) {
+          ml.classList.add('active');
+        } else {
+          ml.classList.remove('active');
+        }
+      });
+    }
+
+    // ScrollSpy de alta precisión
+    let ticking = false;
+    function onScroll() {
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          // Header scroll style
+          if (window.scrollY > 40) {
+            header.classList.add('scrolled');
+          } else {
+            header.classList.remove('scrolled');
+          }
+
+          if (sectionTargets.length === 0) {
+            ticking = false;
+            return;
+          }
+
+          // Si estamos al fondo de la página, activar el último link
+          const atBottom = (window.innerHeight + window.scrollY) >= (document.documentElement.scrollHeight - 60);
+          if (atBottom) {
+            setActiveSection(sectionTargets[sectionTargets.length - 1].id);
+            ticking = false;
+            return;
+          }
+
+          // Detección por posición de viewport
+          const scrollOffset = 180; // Offset visual bajo el header
+          let currentId = sectionTargets[0].id;
+
+          for (let i = 0; i < sectionTargets.length; i++) {
+            const sec = sectionTargets[i].el;
+            const top = sec.offsetTop;
+            if (window.scrollY + scrollOffset >= top) {
+              currentId = sectionTargets[i].id;
+            }
+          }
+
+          setActiveSection(currentId);
+          ticking = false;
+        });
+        ticking = true;
+      }
+    }
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    // Ejecutar una vez al inicio
+    onScroll();
+
     // Eventos hover y mouseleave
     navLinks.forEach(link => {
       link.addEventListener('mouseenter', () => {
+        isHovering = true;
         moveIndicatorTo(link);
       });
 
-      link.addEventListener('click', (e) => {
+      link.addEventListener('click', () => {
         navLinks.forEach(l => l.classList.remove('active'));
         link.classList.add('active');
         activeLink = link;
+        isHovering = false;
         moveIndicatorTo(link);
       });
     });
 
     navList.addEventListener('mouseleave', () => {
+      isHovering = false;
       moveIndicatorTo(activeLink);
     });
 
     window.addEventListener('resize', () => {
       moveIndicatorTo(activeLink);
     });
-
-    // Header scroll background effect
-    window.addEventListener('scroll', () => {
-      if (window.scrollY > 40) {
-        header.classList.add('scrolled');
-      } else {
-        header.classList.remove('scrolled');
-      }
-    }, { passive: true });
-
-    // Scrollspy interactivo usando IntersectionObserver
-    const sections = document.querySelectorAll('section[id], div[id].ticker, div[id].casinoclub-wrap');
-    const observerOptions = {
-      root: null,
-      rootMargin: '-25% 0px -65% 0px',
-      threshold: 0
-    };
-
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          const id = entry.target.getAttribute('id');
-          if (!id) return;
-          const matchingLink = document.querySelector(`.nav-link[href="#${id}"]`);
-          if (matchingLink && matchingLink !== activeLink) {
-            navLinks.forEach(l => l.classList.remove('active'));
-            matchingLink.classList.add('active');
-            activeLink = matchingLink;
-            moveIndicatorTo(matchingLink);
-          }
-
-          // También actualizar links de mobile drawer
-          mobileLinks.forEach(ml => {
-            if (ml.getAttribute('href') === `#${id}`) {
-              mobileLinks.forEach(m => m.classList.remove('active'));
-              ml.classList.add('active');
-            }
-          });
-        }
-      });
-    }, observerOptions);
-
-    sections.forEach(sec => observer.observe(sec));
 
     // Menú hamburguesa móvil
     if (hamburger && drawer) {

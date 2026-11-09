@@ -92,7 +92,7 @@ function rvRenderContent() {
   }).join('');
 
   body.innerHTML = `
-    <div class="rv-fecha-chip">📅 Extracto Oficial: ${rvFmtFecha(sorteo.fecha)}</div>
+    <div class="rv-fecha-chip">Extracto Oficial: ${rvFmtFecha(sorteo.fecha)}</div>
     <div class="rv-primer-premio"
       style="--rv-accent-bg:${pal.bg};--rv-accent-border:${pal.border};--rv-accent-color:${pal.color}">
       <div class="rv-pp-badge">1er<br>premio</div>
@@ -183,7 +183,7 @@ async function rvFetch(force) {
     if (!rvLoaded) {
       body.innerHTML = `
         <div class="rv-error">
-          ⚠️ No se pudo conectar con el servidor oficial de resultados.<br>
+          No se pudo conectar con el servidor oficial de resultados.<br>
           <button class="rv-retry" onclick="rvFetch(false)">↻ Reintentar</button>
         </div>`;
     }
