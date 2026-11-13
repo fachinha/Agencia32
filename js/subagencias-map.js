@@ -540,11 +540,11 @@ const SUBAGENCIAS_DATA = [
     map.on('focus', () => { map.scrollWheelZoom.enable(); });
     map.on('blur', () => { map.scrollWheelZoom.disable(); });
 
-    // CartoDB Voyager: calles, barrios y rutas de Bariloche súper nítidas
-    L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
-      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OSM</a>',
-      subdomains: 'abcd',
-      maxZoom: 19
+    // Google Maps Raster Tiles (100% libres de API key y sin marcas de agua, calles de Bariloche en español)
+    L.tileLayer('https://mt{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}&hl=es', {
+      attribution: '&copy; Google Maps',
+      subdomains: ['0', '1', '2', '3'],
+      maxZoom: 20
     }).addTo(map);
 
     markersLayer = L.layerGroup().addTo(map);
