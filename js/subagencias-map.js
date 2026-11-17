@@ -13,7 +13,8 @@ const SUBAGENCIAS_DATA = [
     zonaLabel: "Sede Central · Este",
     lat: -41.132920,
     lng: -71.284033,
-    isHQ: true
+    isHQ: true,
+    foto: "assets/sede-esandi15.jpeg"
   },
   {
     id: 1,
@@ -268,8 +269,12 @@ const SUBAGENCIAS_DATA = [
   function buildPopupHtml(item) {
     const gmapsUrl = getGoogleMapsUrl(item);
     const badgeClass = item.isHQ ? 'sub-popup-badge-hq' : 'sub-popup-badge';
+    const photoHtml = item.foto
+      ? `<div class="sub-popup-photo-wrap"><img src="${item.foto}" alt="${item.nombre}" class="sub-popup-photo"></div>`
+      : '';
     return `
       <div class="sub-popup-card">
+        ${photoHtml}
         <span class="${badgeClass}">${item.zonaLabel}</span>
         <div class="sub-popup-title">${item.nombre}</div>
         <div class="sub-popup-addr">
@@ -310,7 +315,7 @@ const SUBAGENCIAS_DATA = [
       });
 
       marker.bindPopup(buildPopupHtml(item), {
-        maxWidth: 280,
+        maxWidth: item.foto ? 300 : 280,
         className: 'sub-leaflet-popup'
       });
 

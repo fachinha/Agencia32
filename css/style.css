@@ -595,34 +595,36 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 10px 14px;
-  border-radius: 12px;
+  padding: 14px 16px;
+  border-radius: 14px;
   width: 100%;
-  min-height: 60px;
+  min-height: 92px;
 }
 
 .juego-logo {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  background: rgba(255, 255, 255, 0.98);
-  border-radius: 8px;
-  padding: 6px 14px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
-  max-height: 100%;
+  background: #FFFFFF;
+  border-radius: 12px;
+  padding: 10px 20px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.4);
+  width: 100%;
+  max-width: 240px;
+  min-height: 70px;
 }
 
 .juego-logo img {
   display: block;
-  height: 32px;
+  height: 54px;
   width: auto;
-  max-width: 130px;
+  max-width: 195px;
   object-fit: contain;
 }
 
 .juego-logo-rionegrina img {
-  height: 28px;
-  max-width: 160px;
+  height: 44px;
+  max-width: 205px;
 }
 
 .juego-desc {
@@ -1372,11 +1374,27 @@ body {
 .footer-legal-badge {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  padding: 4px 12px;
-  border-radius: 100px;
+  gap: 10px;
+  background: linear-gradient(135deg, #F07B1E 0%, #D45D06 100%);
+  border: 1.5px solid #FFB366;
+  color: #FFFFFF;
+  font-weight: 700;
+  font-size: 0.84rem;
+  padding: 8px 16px;
+  border-radius: 10px;
+  box-shadow: 0 6px 20px -4px rgba(240, 123, 30, 0.55);
+}
+
+.footer-plus18-box {
+  font-weight: 900;
+  background: #121820;
+  color: #FFB800;
+  border: 1.5px solid #FFB800;
+  border-radius: 6px;
+  padding: 2px 7px;
+  font-size: 0.8rem;
+  letter-spacing: 0.03em;
+  flex-shrink: 0;
 }
 
 /* ==========================================================
@@ -2166,7 +2184,25 @@ html, body {
 .sub-popup-card {
   display: flex;
   flex-direction: column;
-  gap: 5px;
+  gap: 6px;
+}
+
+.sub-popup-photo-wrap {
+  width: 100%;
+  height: 175px;
+  border-radius: 10px;
+  overflow: hidden;
+  margin-bottom: 4px;
+  border: 1px solid rgba(240, 123, 30, 0.45);
+  background: #0A0F14;
+}
+
+.sub-popup-photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 22%;
+  display: block;
 }
 
 .sub-popup-badge,
