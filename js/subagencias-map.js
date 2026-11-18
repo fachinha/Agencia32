@@ -554,9 +554,66 @@ const SUBAGENCIAS_DATA = [
 
     markersLayer = L.layerGroup().addTo(map);
 
+    function updateFilterCounters() {
+      const counts = {
+        all: SUBAGENCIAS_DATA.length,
+        centro: SUBAGENCIAS_DATA.filter(i => i.zona === 'centro').length,
+        alto: SUBAGENCIAS_DATA.filter(i => i.zona === 'alto').length,
+        kms: SUBAGENCIAS_DATA.filter(i => i.zona === 'kms').length,
+        este: SUBAGENCIAS_DATA.filter(i => i.zona === 'este').length
+      };
+      const labels = {
+        all: `Todas (${counts.all})`,
+        centro: `Centro (${counts.centro})`,
+        alto: `El Alto y Sur (${counts.alto})`,
+        kms: `Los Kilómetros (${counts.kms})`,
+        este: `Zona Este (${counts.este})`
+      };
+      document.querySelectorAll('.sub-filter-btn').forEach(btn => {
+        const z = btn.getAttribute('data-zone');
+        if (z && labels[z]) btn.textContent = labels[z];
+      });
+      const subOnlyCount = SUBAGENCIAS_DATA.filter(i => !i.isHQ).length;
+      const legendSub = document.getElementById('subLegendCount');
+      if (legendSub) {
+        legendSub.textContent = `Subagencias Oficiales (${subOnlyCount})`;
+      }
+    }
+
+    // Cargar caché local si existe mientras consulta el servidor en vivo
+    try {
+      const cached = localStorage.getItem('ag32_subagencias_cache');
+      if (cached) {
+        const parsed = JSON.parse(cached);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          SUBAGENCIAS_DATA.length = 0;
+          parsed.forEach(it => SUBAGENCIAS_DATA.push(it));
+        }
+      }
+    } catch (e) {}
+
+    updateFilterCounters();
     const initialData = getFilteredData();
     renderDirectoryList(initialData);
     renderMarkers(initialData, false);
+
+    // Sincronizar con la base de datos en vivo de Cloudflare KV (/api/subagencias)
+    fetch('/api/subagencias', { cache: 'no-store' })
+      .then(res => res.ok ? res.json() : null)
+      .then(data => {
+        if (data && data.ok && Array.isArray(data.items) && data.items.length > 0) {
+          SUBAGENCIAS_DATA.length = 0;
+          data.items.forEach(it => SUBAGENCIAS_DATA.push(it));
+          try {
+            localStorage.setItem('ag32_subagencias_cache', JSON.stringify(data.items));
+          } catch (e) {}
+          updateFilterCounters();
+          const currentFiltered = getFilteredData();
+          renderDirectoryList(currentFiltered);
+          renderMarkers(currentFiltered, false);
+        }
+      })
+      .catch(() => {});
 
     // Eventos de botones de filtro por zona
     document.querySelectorAll('.sub-filter-btn').forEach(btn => {

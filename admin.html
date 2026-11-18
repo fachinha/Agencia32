@@ -1,0 +1,1096 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="theme-color" content="#0A0F14">
+  <title>Panel de Administración de Subagencias | Agencia Oficial 32 Bariloche</title>
+  <link rel="icon" type="image/png" href="assets/favicon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="">
+  <style>
+    :root {
+      --orange: #F07B1E;
+      --orange-dark: #C45E0F;
+      --orange-light: #FF9E4A;
+      --green: #7FA231;
+      --green-dark: #5F7D1F;
+      --green-light: #9BCA34;
+      --red: #E8192C;
+      --dark: #0A0F14;
+      --dark2: #121820;
+      --dark3: #1A222D;
+      --dark4: #242E3C;
+      --white: #FFFFFF;
+      --text-muted: rgba(255, 255, 255, 0.65);
+      --border: rgba(255, 255, 255, 0.1);
+    }
+
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html, body {
+      background: var(--dark);
+      color: var(--white);
+      font-family: 'Outfit', sans-serif;
+      min-height: 100vh;
+      overflow-x: hidden;
+      width: 100%;
+    }
+
+    button, input, select {
+      font-family: 'Outfit', sans-serif;
+    }
+
+    button:active, .btn-action:active {
+      transform: scale(0.96);
+    }
+
+    /* TOPBAR */
+    .admin-header {
+      background: rgba(18, 24, 32, 0.95);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid rgba(240, 123, 30, 0.25);
+      padding: 0.85rem 1.5rem;
+      position: sticky;
+      top: 0;
+      z-index: 900;
+    }
+
+    .admin-header-inner {
+      max-width: 1240px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .admin-brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: var(--white);
+    }
+
+    .admin-brand img {
+      height: 44px;
+      width: auto;
+    }
+
+    .admin-brand-title {
+      font-family: 'Black Han Sans', sans-serif;
+      font-size: 1.15rem;
+      letter-spacing: 0.03em;
+      color: var(--white);
+    }
+
+    .admin-brand-sub {
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: var(--green-light);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+
+    .admin-header-btns {
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+    }
+
+    .btn-outline-sm {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      color: var(--white);
+      padding: 0.5rem 0.95rem;
+      border-radius: 100px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      text-decoration: none;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .btn-outline-sm:hover {
+      border-color: var(--orange);
+      color: var(--orange-light);
+      transform: translateY(-1px);
+    }
+
+    /* PANTALLA DE LOGIN */
+    .login-wrap {
+      min-height: calc(100vh - 76px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+    }
+
+    .login-card {
+      background: var(--dark2);
+      border: 1px solid rgba(240, 123, 30, 0.35);
+      border-radius: 22px;
+      padding: 2.25rem 2rem;
+      width: 100%;
+      max-width: 420px;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.75);
+      text-align: center;
+    }
+
+    .login-logo {
+      width: 78px;
+      height: 78px;
+      object-fit: contain;
+      margin-bottom: 1rem;
+      filter: drop-shadow(0 0 14px rgba(240, 123, 30, 0.4));
+    }
+
+    .login-card h1 {
+      font-family: 'Black Han Sans', sans-serif;
+      font-size: 1.65rem;
+      margin-bottom: 0.4rem;
+    }
+
+    .login-card p {
+      color: var(--text-muted);
+      font-size: 0.92rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .form-group {
+      text-align: left;
+      margin-bottom: 1.1rem;
+    }
+
+    .form-label {
+      display: block;
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: rgba(255, 255, 255, 0.85);
+      margin-bottom: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    .form-input, .form-select {
+      width: 100%;
+      background: var(--dark);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 12px;
+      padding: 0.75rem 1rem;
+      color: var(--white);
+      font-size: 0.95rem;
+      outline: none;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .form-input:focus, .form-select:focus {
+      border-color: var(--orange);
+      box-shadow: 0 0 0 3px rgba(240, 123, 30, 0.2);
+    }
+
+    .btn-live-green {
+      width: 100%;
+      background: linear-gradient(120deg, #5F7D1F 0%, #7FA231 45%, #9BCA34 60%, #5F7D1F 100%);
+      background-size: 200% 100%;
+      color: #FFFFFF;
+      border: none;
+      border-radius: 12px;
+      padding: 0.85rem 1.4rem;
+      font-size: 0.95rem;
+      font-weight: 800;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      box-shadow: 0 10px 24px -6px rgba(127, 162, 49, 0.65);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .btn-live-green:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 14px 28px -6px rgba(127, 162, 49, 0.85);
+    }
+
+    .btn-live-orange {
+      background: linear-gradient(135deg, var(--orange) 0%, var(--orange-dark) 100%);
+      color: #FFFFFF;
+      border: none;
+      border-radius: 12px;
+      padding: 0.78rem 1.25rem;
+      font-size: 0.9rem;
+      font-weight: 800;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      box-shadow: 0 8px 20px -6px rgba(240, 123, 30, 0.6);
+      transition: transform 0.2s ease;
+    }
+
+    .btn-live-orange:hover {
+      transform: translateY(-2px);
+    }
+
+    /* PANEL PRINCIPAL */
+    .dashboard-wrap {
+      display: none;
+      max-width: 1240px;
+      margin: 0 auto;
+      padding: 2rem 1.25rem 4rem;
+    }
+
+    /* Estadísticas rápidas */
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    .stat-box {
+      background: var(--dark2);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 1rem 1.25rem;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .stat-num {
+      font-family: 'Black Han Sans', sans-serif;
+      font-size: 1.85rem;
+      color: var(--orange-light);
+      line-height: 1;
+    }
+
+    .stat-num.green {
+      color: var(--green-light);
+    }
+
+    .stat-lbl {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    /* Grilla de trabajo: Formulario + Listado */
+    .admin-grid {
+      display: grid;
+      grid-template-columns: 440px 1fr;
+      gap: 1.75rem;
+      align-items: start;
+    }
+
+    .admin-card {
+      background: var(--dark2);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 1.5rem;
+    }
+
+    .admin-card-title {
+      font-family: 'Black Han Sans', sans-serif;
+      font-size: 1.35rem;
+      margin-bottom: 0.35rem;
+      color: var(--white);
+    }
+
+    .admin-card-desc {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      margin-bottom: 1.25rem;
+    }
+
+    .input-with-btn {
+      display: flex;
+      gap: 8px;
+    }
+
+    .btn-geocode {
+      background: var(--dark3);
+      border: 1px solid rgba(240, 123, 30, 0.45);
+      color: var(--orange-light);
+      padding: 0 14px;
+      border-radius: 12px;
+      font-weight: 800;
+      font-size: 0.82rem;
+      cursor: pointer;
+      white-space: nowrap;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s ease;
+    }
+
+    .btn-geocode:hover {
+      background: var(--orange);
+      color: #FFFFFF;
+    }
+
+    .preview-map-wrap {
+      margin-top: 0.5rem;
+      margin-bottom: 1rem;
+      border-radius: 14px;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      height: 230px;
+      position: relative;
+      background: #0A0F14;
+    }
+
+    #adminPreviewMap {
+      width: 100%;
+      height: 100%;
+    }
+
+    .map-hint {
+      font-size: 0.76rem;
+      color: var(--green-light);
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .coords-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 1.1rem;
+    }
+
+    .form-btns-row {
+      display: flex;
+      gap: 10px;
+    }
+
+    /* Listado de Subagencias en Admin */
+    .admin-list-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      flex-wrap: wrap;
+      margin-bottom: 1.1rem;
+    }
+
+    .admin-search-input {
+      background: var(--dark);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      border-radius: 100px;
+      padding: 0.55rem 1rem;
+      color: var(--white);
+      font-size: 0.88rem;
+      width: 100%;
+      max-width: 280px;
+      outline: none;
+    }
+
+    .admin-search-input:focus {
+      border-color: var(--green-light);
+    }
+
+    .admin-items-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.65rem;
+      max-height: 640px;
+      overflow-y: auto;
+      padding-right: 4px;
+    }
+
+    .admin-item-row {
+      background: var(--dark3);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 14px;
+      padding: 0.9rem 1.1rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      transition: border-color 0.2s ease;
+    }
+
+    .admin-item-row:hover {
+      border-color: rgba(127, 162, 49, 0.45);
+    }
+
+    .admin-item-row.is-hq {
+      border-color: rgba(240, 123, 30, 0.45);
+      background: linear-gradient(135deg, rgba(240, 123, 30, 0.12) 0%, var(--dark3) 100%);
+    }
+
+    .admin-item-info {
+      min-width: 0;
+      flex: 1;
+    }
+
+    .admin-item-badge {
+      display: inline-block;
+      font-size: 0.66rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--green-light);
+      background: rgba(127, 162, 49, 0.16);
+      padding: 2px 8px;
+      border-radius: 100px;
+      margin-bottom: 4px;
+    }
+
+    .admin-item-badge.hq {
+      color: var(--orange-light);
+      background: rgba(240, 123, 30, 0.2);
+    }
+
+    .admin-item-name {
+      font-size: 1rem;
+      font-weight: 800;
+      color: var(--white);
+      margin-bottom: 2px;
+    }
+
+    .admin-item-addr {
+      font-size: 0.84rem;
+      color: var(--text-muted);
+    }
+
+    .admin-item-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-shrink: 0;
+    }
+
+    .btn-edit, .btn-delete {
+      padding: 0.48rem 0.85rem;
+      border-radius: 10px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      border: 1px solid transparent;
+      transition: all 0.2s ease;
+    }
+
+    .btn-edit {
+      background: rgba(255, 255, 255, 0.07);
+      border-color: rgba(255, 255, 255, 0.15);
+      color: var(--white);
+    }
+
+    .btn-edit:hover {
+      background: var(--orange);
+      border-color: var(--orange-light);
+    }
+
+    .btn-delete {
+      background: rgba(232, 25, 44, 0.14);
+      border-color: rgba(232, 25, 44, 0.35);
+      color: #FF6B7A;
+    }
+
+    .btn-delete:hover {
+      background: var(--red);
+      color: #FFFFFF;
+    }
+
+    /* Toast Notificación */
+    .admin-toast {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 2000;
+      background: #121820;
+      border: 1.5px solid var(--green-light);
+      color: var(--white);
+      padding: 0.9rem 1.25rem;
+      border-radius: 14px;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.8);
+      font-weight: 700;
+      font-size: 0.9rem;
+      display: none;
+      align-items: center;
+      gap: 10px;
+      max-width: 360px;
+    }
+
+    .admin-toast.error {
+      border-color: var(--red);
+    }
+
+    @media (max-width: 960px) {
+      .admin-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 576px) {
+      .admin-header {
+        padding: 0.75rem 1rem;
+      }
+      .admin-item-row {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .admin-item-actions {
+        width: 100%;
+        justify-content: flex-end;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="admin-header">
+    <div class="admin-header-inner">
+      <a href="index.html" class="admin-brand">
+        <img src="assets/logo-agencia32.png" alt="Agencia Oficial 32">
+        <div>
+          <div class="admin-brand-title">AGENCIA OFICIAL 32</div>
+          <div class="admin-brand-sub">Panel de Gestión de Subagencias</div>
+        </div>
+      </a>
+
+      <div class="admin-header-btns">
+        <a href="index.html#subagencias" class="btn-outline-sm">
+          <svg viewBox="0 0 24 24" width="15" height="15" fill="currentColor"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+          <span>Ver Mapa en la Web</span>
+        </a>
+        <button type="button" id="logoutBtn" class="btn-outline-sm" style="display:none;">
+          <span>Cerrar Sesión</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- PANTALLA DE LOGIN -->
+  <div class="login-wrap" id="loginScreen">
+    <form class="login-card" id="loginForm">
+      <img src="assets/logo-agencia32.png" alt="Agencia Oficial 32" class="login-logo">
+      <h1>Acceso Administrador</h1>
+      <p>Ingresá tu clave para agregar, modificar o dar de baja subagencias del mapa oficial de Bariloche.</p>
+
+      <div class="form-group">
+        <label class="form-label" for="adminPassInput">Contraseña</label>
+        <input type="password" id="adminPassInput" class="form-input" placeholder="Ingresá la contraseña..." required autocomplete="current-password">
+      </div>
+
+      <button type="submit" class="btn-live-green" id="loginSubmitBtn">
+        <span>Ingresar al Panel</span>
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/></svg>
+      </button>
+      <div id="loginErrorMsg" style="color:#FF6B7A; font-size:0.85rem; font-weight:700; margin-top:12px; display:none;"></div>
+    </form>
+  </div>
+
+  <!-- DASHBOARD DE GESTIÓN -->
+  <main class="dashboard-wrap" id="dashboardScreen">
+
+    <!-- Resumen de contadores -->
+    <div class="stats-row">
+      <div class="stat-box">
+        <span class="stat-num green" id="statTotal">24</span>
+        <span class="stat-lbl">Puntos Totales en Mapa</span>
+      </div>
+      <div class="stat-box">
+        <span class="stat-num" id="statCentro">11</span>
+        <span class="stat-lbl">Centro y Macrocentro</span>
+      </div>
+      <div class="stat-box">
+        <span class="stat-num" id="statAlto">5</span>
+        <span class="stat-lbl">El Alto y Sur</span>
+      </div>
+      <div class="stat-box">
+        <span class="stat-num" id="statKms">6</span>
+        <span class="stat-lbl">Los Kilómetros / Oeste</span>
+      </div>
+      <div class="stat-box">
+        <span class="stat-num" id="statEste">2</span>
+        <span class="stat-lbl">Zona Este</span>
+      </div>
+    </div>
+
+    <div class="admin-grid">
+
+      <!-- COLUMNA IZQUIERDA: FORMULARIO ALTA / EDICIÓN -->
+      <section class="admin-card">
+        <h2 class="admin-card-title" id="formTitle">Agregar Nueva Subagencia</h2>
+        <p class="admin-card-desc">Escribí el nombre del comercio y la dirección en Bariloche. El mapa ubicará el pin automáticamente.</p>
+
+        <form id="subagenciaForm">
+          <input type="hidden" id="editId" value="">
+
+          <div class="form-group">
+            <label class="form-label" for="subNombre">Nombre del Comercio / Kiosco</label>
+            <input type="text" id="subNombre" class="form-input" placeholder="Ej: Kiosco El Cóndor" required>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="subDireccion">Dirección en Bariloche (Calle y Número)</label>
+            <div class="input-with-btn">
+              <input type="text" id="subDireccion" class="form-input" placeholder="Ej: Onelli 850" required>
+              <button type="button" class="btn-geocode" id="btnGeocode" title="Buscar dirección automáticamente en el mapa">
+                <svg viewBox="0 0 24 24" width="15" height="15" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 110-5 2.5 2.5 0 010 5z"/></svg>
+                <span>Ubicar</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="subZonaSelect">Barrio / Zona de Bariloche</label>
+            <select id="subZonaSelect" class="form-select">
+              <option value="centro|Centro">Centro</option>
+              <option value="centro|Macrocentro">Macrocentro</option>
+              <option value="alto|El Alto">El Alto</option>
+              <option value="alto|El Alto · Sur">El Alto · Sur</option>
+              <option value="kms|Los Kilómetros · Pioneros">Los Kilómetros · Av. Pioneros</option>
+              <option value="kms|Los Kilómetros · Bustillo">Los Kilómetros · Av. Bustillo</option>
+              <option value="kms|Melipal · Oeste">Melipal · Oeste</option>
+              <option value="este|Zona Este">Zona Este</option>
+            </select>
+          </div>
+
+          <!-- Mini mapa interactivo para confirmar o arrastrar el pin -->
+          <div class="preview-map-wrap">
+            <div id="adminPreviewMap"></div>
+          </div>
+          <div class="map-hint">
+            <svg viewBox="0 0 24 24" width="15" height="15" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+            <span>Podés tocar el mapa o arrastrar el pin verde para ajustar el punto exacto.</span>
+          </div>
+
+          <div class="coords-row">
+            <div>
+              <label class="form-label" for="subLat">Latitud</label>
+              <input type="number" step="any" id="subLat" class="form-input" value="-41.1345" required>
+            </div>
+            <div>
+              <label class="form-label" for="subLng">Longitud</label>
+              <input type="number" step="any" id="subLng" class="form-input" value="-71.3055" required>
+            </div>
+          </div>
+
+          <div class="form-btns-row">
+            <button type="submit" class="btn-live-green" id="saveSubBtn">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
+              <span id="saveSubBtnText">Guardar en el Mapa</span>
+            </button>
+            <button type="button" class="btn-outline-sm" id="cancelEditBtn" style="display:none;">
+              <span>Cancelar</span>
+            </button>
+          </div>
+        </form>
+      </section>
+
+      <!-- COLUMNA DERECHA: LISTADO DE SUBAGENCIAS ACTIVAS -->
+      <section class="admin-card">
+        <div class="admin-list-header">
+          <div>
+            <h2 class="admin-card-title">Subagencias Activas</h2>
+            <p class="admin-card-desc" style="margin-bottom:0;">Tocá «Editar» para modificar un local o «Dar de baja» para quitarlo del mapa.</p>
+          </div>
+          <input type="text" id="adminSearchInput" class="admin-search-input" placeholder="Buscar por nombre o dirección...">
+        </div>
+
+        <div class="admin-items-list" id="adminItemsList"></div>
+      </section>
+
+    </div>
+  </main>
+
+  <div class="admin-toast" id="adminToast"></div>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+  <script src="js/subagencias-map.js?v=4"></script>
+  <script>
+    (function() {
+      let adminPassword = sessionStorage.getItem('ag32_admin_pass') || '';
+      let itemsList = [];
+      let previewMap = null;
+      let previewMarker = null;
+
+      const loginScreen = document.getElementById('loginScreen');
+      const dashboardScreen = document.getElementById('dashboardScreen');
+      const logoutBtn = document.getElementById('logoutBtn');
+      const toastEl = document.getElementById('adminToast');
+
+      function showToast(msg, isError = false) {
+        toastEl.textContent = msg;
+        toastEl.className = 'admin-toast' + (isError ? ' error' : '');
+        toastEl.style.display = 'flex';
+        clearTimeout(toastEl._timer);
+        toastEl._timer = setTimeout(() => {
+          toastEl.style.display = 'none';
+        }, 4000);
+      }
+
+      async function apiRequest(payload) {
+        try {
+          const res = await fetch('/api/subagencias', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'X-Admin-Password': adminPassword
+            },
+            body: JSON.stringify(payload)
+          });
+          return await res.json();
+        } catch (err) {
+          // Modo local fallback si se abre sin servidor de Cloudflare
+          if (adminPassword !== 'agencia32') {
+            return { ok: false, error: 'Contraseña incorrecta' };
+          }
+          let localItems = [];
+          try {
+            const c = localStorage.getItem('ag32_subagencias_cache');
+            localItems = c ? JSON.parse(c) : [...SUBAGENCIAS_DATA];
+          } catch (e) {
+            localItems = [...SUBAGENCIAS_DATA];
+          }
+
+          if (payload.action === 'verify') {
+            return { ok: true, items: localItems };
+          }
+          if (payload.action === 'add') {
+            const maxId = localItems.reduce((m, it) => Math.max(m, Number(it.id) || 0), 0);
+            const newItem = {
+              id: maxId + 1,
+              nombre: payload.nombre,
+              direccion: payload.direccion,
+              zona: payload.zona,
+              zonaLabel: payload.zonaLabel,
+              lat: Number(payload.lat),
+              lng: Number(payload.lng),
+              isHQ: false
+            };
+            localItems.push(newItem);
+            localStorage.setItem('ag32_subagencias_cache', JSON.stringify(localItems));
+            return { ok: true, items: localItems, item: newItem };
+          }
+          if (payload.action === 'update') {
+            const idx = localItems.findIndex(i => Number(i.id) === Number(payload.id));
+            if (idx !== -1) {
+              localItems[idx] = {
+                ...localItems[idx],
+                nombre: payload.nombre,
+                direccion: payload.direccion,
+                zona: payload.zona,
+                zonaLabel: payload.zonaLabel,
+                lat: Number(payload.lat),
+                lng: Number(payload.lng)
+              };
+              localStorage.setItem('ag32_subagencias_cache', JSON.stringify(localItems));
+            }
+            return { ok: true, items: localItems };
+          }
+          if (payload.action === 'delete') {
+            localItems = localItems.filter(i => Number(i.id) !== Number(payload.id));
+            localStorage.setItem('ag32_subagencias_cache', JSON.stringify(localItems));
+            return { ok: true, items: localItems };
+          }
+          return { ok: false, error: 'Error de conexión' };
+        }
+      }
+
+      function initPreviewMap() {
+        if (previewMap) return;
+        previewMap = L.map('adminPreviewMap', {
+          center: [-41.1345, -71.3055],
+          zoom: 14
+        });
+        L.tileLayer('https://mt{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}&hl=es', {
+          attribution: '&copy; Google Maps',
+          subdomains: ['0', '1', '2', '3'],
+          maxZoom: 20
+        }).addTo(previewMap);
+
+        previewMarker = L.marker([-41.1345, -71.3055], { draggable: true }).addTo(previewMap);
+
+        previewMarker.on('dragend', () => {
+          const pos = previewMarker.getLatLng();
+          document.getElementById('subLat').value = pos.lat.toFixed(6);
+          document.getElementById('subLng').value = pos.lng.toFixed(6);
+        });
+
+        previewMap.on('click', (e) => {
+          previewMarker.setLatLng(e.latlng);
+          document.getElementById('subLat').value = e.latlng.lat.toFixed(6);
+          document.getElementById('subLng').value = e.latlng.lng.toFixed(6);
+        });
+      }
+
+      function movePreviewPin(lat, lng, zoom = 16) {
+        const nLat = Number(lat);
+        const nLng = Number(lng);
+        if (isNaN(nLat) || isNaN(nLng)) return;
+        document.getElementById('subLat').value = nLat.toFixed(6);
+        document.getElementById('subLng').value = nLng.toFixed(6);
+        if (previewMap && previewMarker) {
+          previewMarker.setLatLng([nLat, nLng]);
+          previewMap.flyTo([nLat, nLng], zoom, { duration: 0.6 });
+        }
+      }
+
+      async function geocodeAddress(rawAddr) {
+        const addr = rawAddr.trim();
+        if (!addr) return null;
+        const fullQuery = `${addr}, San Carlos de Bariloche, Rio Negro, Argentina`;
+        try {
+          const arcUrl = `https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/findAddressCandidates?SingleLine=${encodeURIComponent(fullQuery)}&f=json&maxLocations=1`;
+          const r = await fetch(arcUrl);
+          const d = await r.json();
+          if (d && d.candidates && d.candidates.length > 0) {
+            const loc = d.candidates[0].location;
+            return { lat: loc.y, lng: loc.x };
+          }
+        } catch (e) {}
+        try {
+          const nomUrl = `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(fullQuery)}&format=json&limit=1`;
+          const r2 = await fetch(nomUrl);
+          const d2 = await r2.json();
+          if (Array.isArray(d2) && d2.length > 0) {
+            return { lat: parseFloat(d2[0].lat), lng: parseFloat(d2[0].lon) };
+          }
+        } catch (e) {}
+        return null;
+      }
+
+      function updateStats() {
+        document.getElementById('statTotal').textContent = itemsList.length;
+        document.getElementById('statCentro').textContent = itemsList.filter(i => i.zona === 'centro').length;
+        document.getElementById('statAlto').textContent = itemsList.filter(i => i.zona === 'alto').length;
+        document.getElementById('statKms').textContent = itemsList.filter(i => i.zona === 'kms').length;
+        document.getElementById('statEste').textContent = itemsList.filter(i => i.zona === 'este').length;
+      }
+
+      function renderAdminList() {
+        const container = document.getElementById('adminItemsList');
+        const q = (document.getElementById('adminSearchInput').value || '').trim().toLowerCase();
+
+        const filtered = itemsList.filter(item => {
+          if (!q) return true;
+          return item.nombre.toLowerCase().includes(q) ||
+                 item.direccion.toLowerCase().includes(q) ||
+                 item.zonaLabel.toLowerCase().includes(q);
+        });
+
+        container.innerHTML = filtered.map(item => `
+          <div class="admin-item-row ${item.isHQ ? 'is-hq' : ''}">
+            <div class="admin-item-info">
+              <span class="admin-item-badge ${item.isHQ ? 'hq' : ''}">${item.zonaLabel}</span>
+              <div class="admin-item-name">${item.nombre}</div>
+              <div class="admin-item-addr">${item.direccion} · Bariloche</div>
+            </div>
+            <div class="admin-item-actions">
+              <button type="button" class="btn-edit" data-edit-id="${item.id}">
+                <span>Editar</span>
+              </button>
+              ${!item.isHQ ? `
+                <button type="button" class="btn-delete" data-del-id="${item.id}">
+                  <span>Dar de baja</span>
+                </button>
+              ` : ''}
+            </div>
+          </div>
+        `).join('');
+
+        container.querySelectorAll('[data-edit-id]').forEach(btn => {
+          btn.addEventListener('click', () => {
+            const id = Number(btn.getAttribute('data-edit-id'));
+            startEditing(id);
+          });
+        });
+
+        container.querySelectorAll('[data-del-id]').forEach(btn => {
+          btn.addEventListener('click', async () => {
+            const id = Number(btn.getAttribute('data-del-id'));
+            const target = itemsList.find(i => Number(i.id) === id);
+            if (!target) return;
+            if (!confirm(`¿Seguro que querés dar de baja a "${target.nombre}" (${target.direccion})? Desaparecerá inmediatamente del mapa.`)) {
+              return;
+            }
+            const res = await apiRequest({ action: 'delete', id });
+            if (res && res.ok) {
+              itemsList = res.items;
+              try { localStorage.setItem('ag32_subagencias_cache', JSON.stringify(itemsList)); } catch (e) {}
+              updateStats();
+              renderAdminList();
+              showToast(`Subagencia "${target.nombre}" dada de baja correctamente.`);
+            } else {
+              showToast(res.error || 'No se pudo eliminar', true);
+            }
+          });
+        });
+      }
+
+      function startEditing(id) {
+        const item = itemsList.find(i => Number(i.id) === id);
+        if (!item) return;
+        document.getElementById('editId').value = item.id;
+        document.getElementById('subNombre').value = item.nombre;
+        document.getElementById('subDireccion').value = item.direccion;
+        document.getElementById('formTitle').textContent = `Editar: ${item.nombre}`;
+        document.getElementById('saveSubBtnText').textContent = 'Guardar Cambios';
+        document.getElementById('cancelEditBtn').style.display = 'inline-flex';
+
+        const select = document.getElementById('subZonaSelect');
+        const matchOpt = Array.from(select.options).find(opt => opt.value.startsWith(item.zona + '|'));
+        if (matchOpt) select.value = matchOpt.value;
+
+        movePreviewPin(item.lat, item.lng, 16);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+
+      function resetForm() {
+        document.getElementById('editId').value = '';
+        document.getElementById('subNombre').value = '';
+        document.getElementById('subDireccion').value = '';
+        document.getElementById('formTitle').textContent = 'Agregar Nueva Subagencia';
+        document.getElementById('saveSubBtnText').textContent = 'Guardar en el Mapa';
+        document.getElementById('cancelEditBtn').style.display = 'none';
+      }
+
+      function openDashboard(items) {
+        itemsList = items;
+        try { localStorage.setItem('ag32_subagencias_cache', JSON.stringify(itemsList)); } catch (e) {}
+        loginScreen.style.display = 'none';
+        dashboardScreen.style.display = 'block';
+        logoutBtn.style.display = 'inline-flex';
+        initPreviewMap();
+        setTimeout(() => { if (previewMap) previewMap.invalidateSize(); }, 200);
+        updateStats();
+        renderAdminList();
+      }
+
+      // Login Submit
+      document.getElementById('loginForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const passInput = document.getElementById('adminPassInput');
+        const errEl = document.getElementById('loginErrorMsg');
+        adminPassword = passInput.value.trim();
+        errEl.style.display = 'none';
+
+        const res = await apiRequest({ action: 'verify' });
+        if (res && res.ok) {
+          sessionStorage.setItem('ag32_admin_pass', adminPassword);
+          openDashboard(res.items);
+        } else {
+          errEl.textContent = res.error || 'Contraseña incorrecta';
+          errEl.style.display = 'block';
+        }
+      });
+
+      // Auto-login si ya estaba en sesión
+      if (adminPassword) {
+        apiRequest({ action: 'verify' }).then(res => {
+          if (res && res.ok) openDashboard(res.items);
+        });
+      }
+
+      logoutBtn.addEventListener('click', () => {
+        sessionStorage.removeItem('ag32_admin_pass');
+        adminPassword = '';
+        dashboardScreen.style.display = 'none';
+        logoutBtn.style.display = 'none';
+        loginScreen.style.display = 'flex';
+      });
+
+      // Botón Ubicar Dirección en el Mapa
+      document.getElementById('btnGeocode').addEventListener('click', async () => {
+        const addr = document.getElementById('subDireccion').value;
+        if (!addr.trim()) {
+          showToast('Escribí primero la calle y número en Bariloche.', true);
+          return;
+        }
+        const btn = document.getElementById('btnGeocode');
+        btn.querySelector('span').textContent = 'Buscando...';
+        const coords = await geocodeAddress(addr);
+        btn.querySelector('span').textContent = 'Ubicar';
+        if (coords) {
+          movePreviewPin(coords.lat, coords.lng, 16);
+          showToast('Dirección ubicada en el mapa. Podés ajustar el pin si hace falta.');
+        } else {
+          showToast('No encontramos esa numeración exacta. Tocá el mapa para marcar el punto.', true);
+        }
+      });
+
+      // También geocodificar automáticamente al salir del campo dirección si aún no se movió
+      document.getElementById('subDireccion').addEventListener('change', async (e) => {
+        const editId = document.getElementById('editId').value;
+        if (!editId && e.target.value.trim().length > 4) {
+          const coords = await geocodeAddress(e.target.value);
+          if (coords) movePreviewPin(coords.lat, coords.lng, 16);
+        }
+      });
+
+      document.getElementById('cancelEditBtn').addEventListener('click', resetForm);
+
+      document.getElementById('adminSearchInput').addEventListener('input', renderAdminList);
+
+      // Guardar Alta o Edición
+      document.getElementById('subagenciaForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const editId = document.getElementById('editId').value;
+        const nombre = document.getElementById('subNombre').value.trim();
+        const direccion = document.getElementById('subDireccion').value.trim();
+        const [zona, zonaLabel] = document.getElementById('subZonaSelect').value.split('|');
+        let lat = parseFloat(document.getElementById('subLat').value);
+        let lng = parseFloat(document.getElementById('subLng').value);
+
+        const saveBtn = document.getElementById('saveSubBtn');
+        saveBtn.disabled = true;
+
+        // Si es alta nueva y las coordenadas siguen en el valor por defecto, geocodificar antes de guardar
+        if (!editId && Math.abs(lat - (-41.1345)) < 0.0001 && Math.abs(lng - (-71.3055)) < 0.0001) {
+          const coords = await geocodeAddress(direccion);
+          if (coords) {
+            lat = coords.lat;
+            lng = coords.lng;
+            movePreviewPin(lat, lng, 16);
+          }
+        }
+
+        const payload = editId
+          ? { action: 'update', id: Number(editId), nombre, direccion, zona, zonaLabel, lat, lng }
+          : { action: 'add', nombre, direccion, zona, zonaLabel, lat, lng };
+
+        const res = await apiRequest(payload);
+        saveBtn.disabled = false;
+
+        if (res && res.ok) {
+          itemsList = res.items;
+          try { localStorage.setItem('ag32_subagencias_cache', JSON.stringify(itemsList)); } catch (err) {}
+          updateStats();
+          renderAdminList();
+          resetForm();
+          showToast(editId ? '¡Cambios guardados en el mapa!' : `¡"${nombre}" agregada al mapa en vivo!`);
+        } else {
+          showToast(res.error || 'Error al guardar la subagencia', true);
+        }
+      });
+    })();
+  </script>
+</body>
+</html>
