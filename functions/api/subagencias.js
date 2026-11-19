@@ -226,7 +226,8 @@ const DEFAULT_SUBAGENCIAS = [
 
 const KV_KEY = "subagencias_v1";
 const PASS_KEY = "admin_pass_v1";
-const DEFAULT_PASS = "agencia32";
+const DEFAULT_USER = "AGENCIA32";
+const DEFAULT_PASS = "ESANDI15";
 
 function jsonResponse(body, status = 200) {
   return new Response(JSON.stringify(body), {
@@ -236,7 +237,7 @@ function jsonResponse(body, status = 200) {
       "Cache-Control": "no-store, no-cache, must-revalidate",
       "Access-Control-Allow-Origin": "*",
       "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
-      "Access-Control-Allow-Headers": "Content-Type, X-Admin-Password"
+      "Access-Control-Allow-Headers": "Content-Type, X-Admin-User, X-Admin-Password"
     }
   });
 }
@@ -251,14 +252,15 @@ async function getStoredList(kv) {
   return [...DEFAULT_SUBAGENCIAS];
 }
 
-async function checkPassword(kv, provided) {
-  if (!provided) return false;
+async function checkCredentials(kv, providedUser, providedPass) {
+  if (!providedUser || !providedPass) return false;
+  if (providedUser.trim().toUpperCase() !== DEFAULT_USER) return false;
   let validPass = DEFAULT_PASS;
   if (kv) {
     const customPass = await kv.get(PASS_KEY);
     if (customPass) validPass = customPass;
   }
-  return provided.trim() === validPass;
+  return providedPass.trim().toUpperCase() === validPass.toUpperCase();
 }
 
 export async function onRequestOptions() {
@@ -278,13 +280,14 @@ export async function onRequestGet(context) {
 export async function onRequestPost(context) {
   try {
     const kv = context.env.AGENCIA32_KV;
+    const user = context.request.headers.get("X-Admin-User") || "";
     const pass = context.request.headers.get("X-Admin-Password") || "";
     const body = await context.request.json();
     const action = body.action;
 
-    const isAuthorized = await checkPassword(kv, pass);
+    const isAuthorized = await checkCredentials(kv, user, pass);
     if (!isAuthorized) {
-      return jsonResponse({ ok: false, error: "Contraseña incorrecta" }, 401);
+      return jsonResponse({ ok: false, error: "Usuario o contraseña incorrectos" }, 401);
     }
 
     if (action === "verify") {

@@ -820,7 +820,7 @@ body {
 }
 
 .casinoclub-cta-title {
-  font-family: 'Black Han Sans', sans-serif;
+  font-family: 'Black Han Sans', 'Paytone One', sans-serif;
   font-size: 1.8rem;
   line-height: 1.15;
   color: var(--white);
@@ -1395,6 +1395,25 @@ body {
   font-size: 0.8rem;
   letter-spacing: 0.03em;
   flex-shrink: 0;
+}
+
+.footer-admin-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(255, 255, 255, 0.2);
+  margin-left: 8px;
+  padding: 4px;
+  border-radius: 6px;
+  vertical-align: middle;
+  text-decoration: none;
+  transition: color 0.2s ease, transform 0.2s ease, background 0.2s ease;
+}
+
+.footer-admin-icon:hover {
+  color: var(--orange-light);
+  background: rgba(255, 255, 255, 0.06);
+  transform: scale(1.12);
 }
 
 /* ==========================================================

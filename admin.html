@@ -590,7 +590,12 @@
     <form class="login-card" id="loginForm">
       <img src="assets/logo-agencia32.png" alt="Agencia Oficial 32" class="login-logo">
       <h1>Acceso Administrador</h1>
-      <p>Ingresá tu clave para agregar, modificar o dar de baja subagencias del mapa oficial de Bariloche.</p>
+      <p>Ingresá tu usuario y contraseña para agregar, modificar o dar de baja subagencias del mapa oficial de Bariloche.</p>
+
+      <div class="form-group">
+        <label class="form-label" for="adminUserInput">Usuario</label>
+        <input type="text" id="adminUserInput" class="form-input" placeholder="Ingresá el usuario..." required autocomplete="username">
+      </div>
 
       <div class="form-group">
         <label class="form-label" for="adminPassInput">Contraseña</label>
@@ -726,6 +731,7 @@
   <script src="js/subagencias-map.js?v=4"></script>
   <script>
     (function() {
+      let adminUser = sessionStorage.getItem('ag32_admin_user') || '';
       let adminPassword = sessionStorage.getItem('ag32_admin_pass') || '';
       let itemsList = [];
       let previewMap = null;
@@ -752,6 +758,7 @@
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
+              'X-Admin-User': adminUser,
               'X-Admin-Password': adminPassword
             },
             body: JSON.stringify(payload)
@@ -759,8 +766,8 @@
           return await res.json();
         } catch (err) {
           // Modo local fallback si se abre sin servidor de Cloudflare
-          if (adminPassword !== 'agencia32') {
-            return { ok: false, error: 'Contraseña incorrecta' };
+          if (adminUser.toUpperCase() !== 'AGENCIA32' || adminPassword.toUpperCase() !== 'ESANDI15') {
+            return { ok: false, error: 'Usuario o contraseña incorrectos' };
           }
           let localItems = [];
           try {
@@ -987,30 +994,35 @@
       // Login Submit
       document.getElementById('loginForm').addEventListener('submit', async (e) => {
         e.preventDefault();
+        const userInput = document.getElementById('adminUserInput');
         const passInput = document.getElementById('adminPassInput');
         const errEl = document.getElementById('loginErrorMsg');
+        adminUser = userInput.value.trim();
         adminPassword = passInput.value.trim();
         errEl.style.display = 'none';
 
         const res = await apiRequest({ action: 'verify' });
         if (res && res.ok) {
+          sessionStorage.setItem('ag32_admin_user', adminUser);
           sessionStorage.setItem('ag32_admin_pass', adminPassword);
           openDashboard(res.items);
         } else {
-          errEl.textContent = res.error || 'Contraseña incorrecta';
+          errEl.textContent = res.error || 'Usuario o contraseña incorrectos';
           errEl.style.display = 'block';
         }
       });
 
       // Auto-login si ya estaba en sesión
-      if (adminPassword) {
+      if (adminUser && adminPassword) {
         apiRequest({ action: 'verify' }).then(res => {
           if (res && res.ok) openDashboard(res.items);
         });
       }
 
       logoutBtn.addEventListener('click', () => {
+        sessionStorage.removeItem('ag32_admin_user');
         sessionStorage.removeItem('ag32_admin_pass');
+        adminUser = '';
         adminPassword = '';
         dashboardScreen.style.display = 'none';
         logoutBtn.style.display = 'none';
